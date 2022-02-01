@@ -1,6 +1,5 @@
 package eminarican.eggwars.team;
 
-import pocketmine.utils.TextFormat;
 import eminarican.eggwars.utils.Transform;
 import pocketmine.player.Player;
 import haxe.ds.Option;
@@ -14,7 +13,7 @@ class Team {
     private var count: Int = 0;
     private var alive: Bool = true;
 
-    private var players: TypedArray<String, Player> = new TypedArray();
+    private var members: TypedArray<String, Player> = new TypedArray();
 
 	public function new(limit: Int, color: TeamColor) {
         this.limit = limit;
@@ -29,14 +28,31 @@ class Team {
         return Transform.teamColorToString('${this.getColor()}');
     }
 
-    public function getPlayer(name: String): Option<Player> {
-        return Transform.nullableToOption(this.players.get(name));
+    public function hasSpace(): Bool {
+        return this.limit > this.count;
     }
 
-    public function addPlayer(player: Player) {
+    public function getMemberCount() {
+        return this.count;
     }
 
-    public function remPlayer(name: String): Bool {
-        return true;
+    public function getMember(name: String): Option<Player> {
+        return Transform.nullableToOption(this.members.get(name));
+    }
+
+    public function hasMember(player: Player) {
+        return Transform.nullableToBool(this.members.get(player.getName()));
+    }
+
+    public function addMember(player: Player) {
+        this.members.set(player.getName(), player);
+    }
+
+    public function remMember(player: Player) {
+        this.remMemberByName(player.getName());
+    }
+
+    public function remMemberByName(name: String) {
+        this.members.removeKey(name);
     }
 }

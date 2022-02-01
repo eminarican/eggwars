@@ -1,10 +1,11 @@
 package eminarican.eggwars;
 
+import pocketmine.event.Listener;
 import eminarican.eggwars.team.TeamColor;
 import eminarican.eggwars.arena.Arena;
 import pocketmine.plugin.PluginBase;
 
-class Main extends PluginBase {
+class Main extends PluginBase implements Listener {
 
     private var arena: Arena;
     

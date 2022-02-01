@@ -1,5 +1,6 @@
 package eminarican.eggwars.arena;
 
+import eminarican.eggwars.utils.Balancer;
 import eminarican.eggwars.utils.Transform;
 import eminarican.eggwars.team.TeamColor;
 import eminarican.eggwars.team.Team;
@@ -10,16 +11,30 @@ import php.Exception;
 
 class Arena {
     
-    private var players: TypedArray<String, Player> = new TypedArray();
+    private var members: TypedArray<String, Player> = new TypedArray();
     private var teams: TypedArray<TeamColor, Team> = new TypedArray();
+
+    private var balancer: Balancer;
 
     private var limit = 0;
 
     public function new(perLimit: Int, teams: Array<TeamColor>) {
+        this.balancer = new Balancer(this.teams);
+
         for (color in teams) {
             this.addTeam(new Team(perLimit, color));
             this.limit += perLimit;
         }
+    }
+
+    public function getMember(name: String): Option<Player> {
+        return Transform.nullableToOption(this.members.get(name));
+    }
+
+    public function addMember(player: Player): Bool {
+        return Transform.optionToBoolWithAction(this.balancer.getAvailable(), (team) -> {
+            team.addMember(player);
+        });
     }
 
     public function getTeam(color: TeamColor): Option<Team> {
