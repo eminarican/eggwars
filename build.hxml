@@ -1,0 +1,9 @@
+-cp src
+eminarican.eggwars.Main
+
+--library pmhaxe
+--library phpnatives
+
+-D no-deprecation-warnings
+
+--php out/src
