@@ -1,5 +1,6 @@
-package eminarican.eggwars.arena;
+package eminarican.eggwars.team;
 
+import pocketmine.utils.TextFormat;
 import eminarican.eggwars.utils.Transform;
 import pocketmine.player.Player;
 import haxe.ds.Option;
@@ -12,7 +13,7 @@ class Team {
 
     private var count: Int = 0;
     private var alive: Bool = true;
-    
+
     private var players: TypedArray<String, Player> = new TypedArray();
 
 	public function new(limit: Int, color: TeamColor) {
@@ -22,6 +23,10 @@ class Team {
 
     public function getColor(): TeamColor {
         return this.color;
+    }
+
+    public function getColorName(): String {
+        return Transform.teamColorToString('${this.getColor()}');
     }
 
     public function getPlayer(name: String): Option<Player> {
