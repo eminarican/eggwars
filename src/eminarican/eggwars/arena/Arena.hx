@@ -10,7 +10,7 @@ import php.TypedArray;
 import php.Exception;
 
 class Arena {
-    
+
     private var members: TypedArray<String, Player> = new TypedArray();
     private var teams: TypedArray<TeamColor, Team> = new TypedArray();
 
@@ -37,6 +37,13 @@ class Arena {
         });
     }
 
+    public function remMember(player: Player) {
+        this.members.removeKey(player.getName());
+        this.teams.foreachKeyValue((color, team) -> {
+            team.remMember(player);
+        });
+    }
+
     public function getTeam(color: TeamColor): Option<Team> {
         return Transform.nullableToOption(teams.get(color));
     }
@@ -53,7 +60,7 @@ class Arena {
         if (this.hasTeam(team)) {
             this.teams.set(team.getColor(), team);
         } else {
-            throw new Exception('Team ${team.getColorName()} already exists');
+            throw new Exception('Team ${team.getColorReadable()} already exists');
         }
     }
 }

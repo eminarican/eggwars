@@ -1,9 +1,11 @@
 package eminarican.eggwars;
 
-import pocketmine.event.Listener;
+import pocketmine.event.player.PlayerQuitEvent;
+import pocketmine.event.player.PlayerJoinEvent;
 import eminarican.eggwars.team.TeamColor;
 import eminarican.eggwars.arena.Arena;
 import pocketmine.plugin.PluginBase;
+import pocketmine.event.Listener;
 
 class Main extends PluginBase implements Listener {
 
@@ -20,5 +22,15 @@ class Main extends PluginBase implements Listener {
     }
 
     override function onDisable() {
+    }
+
+    function onJoin(event: PlayerJoinEvent) {
+        if (!this.arena.addMember(event.getPlayer())) {
+            event.getPlayer().kick("EggWars arena is full!");
+        }
+    }
+
+    function onQuit(event: PlayerQuitEvent) {
+        this.arena.remMember(event.getPlayer());
     }
 }

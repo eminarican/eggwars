@@ -24,7 +24,7 @@ class Team {
         return this.color;
     }
 
-    public function getColorName(): String {
+    public function getColorReadable(): String {
         return Transform.teamColorToString('${this.getColor()}');
     }
 
