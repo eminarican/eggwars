@@ -1,5 +1,6 @@
 package eminarican.eggwars.team;
 
+import eminarican.eggwars.utils.Arrays;
 import pocketmine.utils.Transform;
 import pocketmine.player.Player;
 import haxe.ds.Option;
@@ -32,15 +33,15 @@ class Team {
 		return this.limit > this.count;
 	}
 
-	public function getMemberCount() {
+	public function getMemberCount(): Int {
 		return this.count;
 	}
 
 	public function getMember(name: String): Option<Player> {
-		return Transform.nullableToOption(this.members.get(name));
+		return Arrays.get(this.members, name);
 	}
 
-	public function hasMember(player: Player) {
+	public function hasMember(player: Player): Bool {
 		return Transform.nullableToBool(this.members.get(player.getName()));
 	}
 

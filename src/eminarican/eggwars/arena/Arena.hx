@@ -2,6 +2,7 @@ package eminarican.eggwars.arena;
 
 import eminarican.eggwars.utils.Balancer;
 import eminarican.eggwars.team.TeamColor;
+import eminarican.eggwars.utils.Arrays;
 import eminarican.eggwars.team.Team;
 import pocketmine.utils.Transform;
 import pocketmine.player.Player;
@@ -19,7 +20,7 @@ class Arena {
 	private var limit = 0;
 
 	public function new(perLimit: Int, teams: Array<TeamColor>) {
-		this.balancer = new Balancer(this.teams);
+		this.balancer = new Balancer();
 
 		for (color in teams) {
 			this.addTeam(new Team(perLimit, color));
@@ -28,11 +29,11 @@ class Arena {
 	}
 
 	public function getMember(name: String): Option<Player> {
-		return Transform.nullableToOption(this.members.get(name));
+		return Arrays.get(this.members, name);
 	}
 
 	public function addMember(player: Player): Bool {
-		return Transform.optionToBoolWithAction(this.balancer.getAvailable(), (team) -> {
+		return Transform.optionToBoolWithAction(this.balancer.getAvailable(this.teams), (team) -> {
 			team.addMember(player);
 		});
 	}
@@ -45,7 +46,7 @@ class Arena {
 	}
 
 	public function getTeam(color: TeamColor): Option<Team> {
-		return Transform.nullableToOption(teams.get(color));
+		return Arrays.get(this.teams, color);
 	}
 
 	public function hasTeam(team: Team): Bool {
@@ -57,7 +58,7 @@ class Arena {
 	}
 
 	public function addTeam(team: Team) {
-		if (this.hasTeam(team)) {
+		if (!this.hasTeam(team)) {
 			this.teams.set(team.getColor(), team);
 		} else {
 			throw new Exception('Team ${team.getColorReadable()} already exists');

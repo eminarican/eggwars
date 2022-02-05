@@ -11,12 +11,18 @@ class Main extends PluginBase implements Listener {
 
 	private var arena: Arena;
 
-	override function onEnable() {
-		getServer().getLogger().notice("Haxe eggwars plugin by eminarican!"); // ;d
-		this.arena = new Arena(2, [TeamColor.Yellow, TeamColor.Green, TeamColor.Blue, TeamColor.Red]);
+	override function onEnable(): Void {
+		this.getServer().getLogger().notice("Haxe eggwars plugin by eminarican!"); // ;d
+		this.getServer().getPluginManager().registerEvents(this, this);
+		this.arena = new Arena(2, [
+			TeamColor.Yellow,
+			TeamColor.Green,
+			TeamColor.Blue,
+			TeamColor.Red,
+		]);
 	}
 
-	override function onDisable() {}
+	override function onDisable(): Void {}
 
 	function onJoin(event: PlayerJoinEvent) {
 		if (!this.arena.addMember(event.getPlayer())) {
