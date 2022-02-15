@@ -1,5 +1,6 @@
 package eminarican.eggwars;
 
+import pocketmine.form.MenuForm;
 import pocketmine.event.player.PlayerQuitEvent;
 import pocketmine.event.player.PlayerJoinEvent;
 import eminarican.eggwars.team.TeamColor;
@@ -25,9 +26,14 @@ class Main extends PluginBase implements Listener {
 	override function onDisable(): Void {}
 
 	function onJoin(event: PlayerJoinEvent) {
-		if (!this.arena.addMember(event.getPlayer())) {
+		var player = event.getPlayer();
+		if (!this.arena.addMember(player)) {
 			event.getPlayer().kick("EggWars arena is full!");
 		}
+
+		var team = this.arena.findTeamByMember(player);
+		var form = new MenuForm("EggWars Info", 'your team: ${team.getColorReadable()}', [], (player, selection) -> {});
+		player.sendForm(form);
 	}
 
 	function onQuit(event: PlayerQuitEvent) {

@@ -6,11 +6,9 @@ import pocketmine.utils.Transform;
 import php.TypedArray;
 import haxe.ds.Option;
 
-class Balancer {
+abstract class Balancer {
 
-	public function new() {}
-
-	public function getAvailable(teams: TypedArray<TeamColor, Team>): Option<Team> {
+	public static function getAvailable(teams: TypedArray<TeamColor, Team>): Option<Team> {
 		var result: Null<Team> = null;
 		teams.foreachKeyValue((color, team) -> {
 			if (result == null || team.getMemberCount() < result.getMemberCount()) {

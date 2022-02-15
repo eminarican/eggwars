@@ -15,13 +15,9 @@ class Arena {
 	private var members: TypedArray<String, Player> = new TypedArray();
 	private var teams: TypedArray<TeamColor, Team> = new TypedArray();
 
-	private var balancer: Balancer;
-
 	private var limit = 0;
 
 	public function new(perLimit: Int, teams: Array<TeamColor>) {
-		this.balancer = new Balancer();
-
 		for (color in teams) {
 			this.addTeam(new Team(perLimit, color));
 			this.limit += perLimit;
@@ -33,7 +29,7 @@ class Arena {
 	}
 
 	public function addMember(player: Player): Bool {
-		return Transform.optionToBoolWithAction(this.balancer.getAvailable(this.teams), (team) -> {
+		return Transform.optionToBoolWithAction(Balancer.getAvailable(this.teams), (team) -> {
 			team.addMember(player);
 		});
 	}
@@ -43,6 +39,22 @@ class Arena {
 		this.teams.foreachKeyValue((color, team) -> {
 			team.remMember(player);
 		});
+	}
+
+	public function findTeamByMember(player: Player): Team {
+		var result = null;
+
+		this.teams.foreachKeyValue((color, team) -> {
+			if (team.hasMember(player)) {
+				result = team;
+			}
+		});
+
+		if (result == null) {
+			throw new Exception('trying to get team of unregistered player');
+		}
+
+		return result;
 	}
 
 	public function getTeam(color: TeamColor): Option<Team> {

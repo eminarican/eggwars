@@ -42,7 +42,7 @@ class Team {
 	}
 
 	public function hasMember(player: Player): Bool {
-		return Transform.nullableToBool(this.members.get(player.getName()));
+		return Transform.nullableToBool(this.getMember(player.getName()));
 	}
 
 	public function addMember(player: Player) {
